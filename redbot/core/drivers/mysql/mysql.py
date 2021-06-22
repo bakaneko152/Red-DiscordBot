@@ -58,7 +58,7 @@ class MySQLDriver(BaseDriver):
                 "Red must be installed with the [mysql] extra to use the MySQL driver"
             )
         cls._query=mysql_queries(storage_details["db"])
-        cls._pool = await aiomysql.create_pool(**storage_details)
+        cls._pool = await aiomysql.create_pool(**storage_details,connect_timeout=5)
         await cls._execute(cls._query.create_redcogs())
         # with DDL_SCRIPT_PATH.open() as fs:
         #     await cls._pool.execute(fs.read())
@@ -168,7 +168,10 @@ class MySQLDriver(BaseDriver):
         except aiomysql.DatabaseError:#UndefinedTableError:
             raise KeyError from None
         output=None
-        result=result[0]
+        try:
+            result=result[0]
+        except:
+            result=None
         if result is None:
             # The result is None both when postgres yields no results, or when it yields a NULL row
             # A 'null' JSON value would be returned as encoded JSON, i.e. the string 'null'
