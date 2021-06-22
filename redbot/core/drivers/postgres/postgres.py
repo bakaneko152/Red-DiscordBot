@@ -208,7 +208,6 @@ class PostgresDriver(BaseDriver):
         cls, *, interactive: bool = False, drop_db: Optional[bool] = None, **kwargs
     ) -> None:
         """Delete all data being stored by this driver.
-
         Parameters
         ----------
         interactive : bool
@@ -220,7 +219,6 @@ class PostgresDriver(BaseDriver):
             bot's instance. Otherwise, schemas within the database which
             store bot data will be dropped, as well as functions,
             aggregates, event triggers, and meta-tables.
-
         """
         if interactive is True and drop_db is None:
             print(
